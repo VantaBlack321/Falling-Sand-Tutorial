@@ -174,6 +174,9 @@ export function clearGrid() {
  */
 export function checkBounds(row, col) {
     // TODO make sure row and col are within the grid
+    if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length) {
+        return false;
+    }
     return true;
 }
 
@@ -191,9 +194,24 @@ export function checkBounds(row, col) {
  * @returns {boolean} If the particle was moved or not
  */
 export function moveParticle(row, col, newRow, newCol, swap) {
-    // TODO move a particle from (row, col) to (newRow, newCol)
+    if (!checkBounds(row, col) || !checkBounds(newRow, newCol)) {
+        return false;
+    }
+
+    // 👇 Add this check 👇
+    if (getParticle(newRow, newCol)) {
+        return false;
+    }
+    // 👆 Add this check 👆
+
+    grid[newRow][newCol] = grid[row][col];
+    grid[row][col] = null;
     return true;
 }
+
+
+
+
 
 /**
  * Draws all particles
