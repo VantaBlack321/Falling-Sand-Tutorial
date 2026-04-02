@@ -198,16 +198,27 @@ export function moveParticle(row, col, newRow, newCol, swap) {
         return false;
     }
 
-    // 👇 Add this check 👇
     if (getParticle(newRow, newCol)) {
-        return false;
+        // 👇 Add this check and swap logic 👇
+        // If there is a particle but we can swap then flip the particles
+        if (swap && swap(getParticle(newRow, newCol))) {
+            const temp = grid[newRow][newCol];
+            grid[newRow][newCol] = grid[row][col];
+            grid[row][col] = temp;
+            return true;
+        }
+        // If we can't swap then don't move
+        else {
+            return false;
+        }
+        // 👆 Add this check and swap logic 👆
     }
-    // 👆 Add this check 👆
 
     grid[newRow][newCol] = grid[row][col];
     grid[row][col] = null;
     return true;
 }
+
 
 
 
